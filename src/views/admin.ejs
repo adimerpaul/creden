@@ -1,0 +1,143 @@
+<%- include('templates/header.ejs'); %>
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    <i class="fa fa-plus"></i> Nuevo personal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nuevo personal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="personal" method="POST" enctype="multipart/form-data">
+                <div class="form-group row">
+                  <label for="inputPassword" class="col-sm-2 col-form-label">Nombre</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputPassword" name="nombre" required>
+                  </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword2" class="col-sm-2 col-form-label">cargo</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputPassword2" name="cargo" required>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">foto</label>
+                    <div class="col-sm-10">
+                      <input type="file" name="avatar" />
+                    </div>
+                  </div>
+                    
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+              </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>nombre</th>
+                <th>cargo</th>
+                <th>fecha</th>
+                <th>Opciones</th>
+                <th>Credencial</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>id</th>
+                <th>nombre</th>
+                <th>cargo</th>
+                <th>fecha</th>
+                <th>Opciones</th>
+                <th>Credencial</th>
+            </tr>
+            </tfoot>
+            <tbody>
+                <% datos.forEach(function(dato) { %>
+                    <tr>
+                        <td><%= dato.idpersonal%></td>
+                        <td><%= dato.nombre%></td>
+                        <td><%= dato.cargo%></td>
+                        <td><%= dato.fecha%></td>
+                        <td>
+                            <button  data-toggle="modal" data-target="#modificar" data-nombre="<%= dato.nombre%>" data-cargo="<%= dato.cargo%>" data-id="<%= dato.idpersonal%>" class="btn btn-warning p-1"><i class="nav-icon fas fa-edit"></i></button>
+                            <a href="eliminar/<%= dato.idpersonal%>" class="btn btn-danger p-1"><i class="nav-icon fas fa-trash"></i></a>
+                        </td>
+                        <td><a target="_blank" href="credential/<%= dato.idpersonal%>" class="btn btn-info p-1"><i class="nav-icon fas fa-cog"></i></a></td>
+                    </tr>
+                <%});%>
+            </tbody>
+        </table>
+<div class="modal fade" id="modificar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modificar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="personalmodificar" method="POST">
+          <div class="form-group row">
+            <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="nombre" name="nombre" required>
+              <input  id="idpersonal" name="id" required hidden>
+            </div>
+          </div>
+          <div class="form-group row">
+              <label for="cargo" class="col-sm-2 col-form-label">cargo</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="cargo" name="cargo" required>
+              </div>
+            </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+        </div>
+    </div>
+    </div>
+<%- include('templates/footer.ejs'); %>
+<script>
+$('#modificar').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var nombre = button.data('nombre')
+  var cargo = button.data('cargo')
+  $('#nombre').val(nombre);
+  $('#cargo').val(cargo);
+  $('#idpersonal').val(button.data('id'));
+})
+</script>
